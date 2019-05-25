@@ -1,0 +1,110 @@
+
+<html>
+<head>
+<style type="text/css">
+body,td {font-family:Comic Sans MS;font-size:14px;}
+a:link {color:#0000ff;}
+a:visited {color:#0000ff;}
+a:active {color:#ff0000;}
+a:hover {color:#ff0000;} 
+</style>
+<script type="text/javascript"
+//
+// *** FIX THE LINE BELOW TO USE YOU GOOGLE MAPS API KEY
+//
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyC_K8w_4ZKj4N_J87i8mSrCsbT0HAIEx9o">
+</script>
+<script type="text/javascript">
+//
+// format for the my_locations array is:
+//   
+//  var my_locations =[ 
+//  ["first text string for the tooltip",
+//   "2nd text string for the descriptions below the map", 
+//    marker lat, marker long, "marker letter" , "marker color string in hex"],
+//  [ ... same six items as the previous row for the 2nd location ...],
+//  [ ... same six items as the previous row for the 3rd location ...],
+//  .
+//  .
+//  [ ... same six items as the previous row for the last location ...]
+//  ]; 
+//
+var my_locations =[
+  ["Pasadena, CA Oct 18 - Oct 21 2018",
+   "<ul><li>The GMiS 30th Annual HENAAC Conference (STEM National Conference)</li><li>Great Minds in STEM (GMiS) contributes to the success of thousands of STEM professionals, college students, and K-12 educators, students, and parents, through its HENAAC Conference, Awards, Scholars Program, and Viva Technology Program.</li><li>I participated in the College Bowl which composed of 300 college students, 30 teams coached by several companies and government agencies, five rounds of competition judged by industry and and government representatives, and scholarships.</li><li> This 24 hour competition focused on showcasing our talents, teamwork and leadership skills.</li><li>I was in the Verizon team and won 1st place winning a scholarship and future employment opportunities with Verizon.</li></ul>",
+   34.144130, -118.144550,"P","ff0000"],
+  ["Cleveland, OH Nov 7 - Nov 11 2018",
+  "<ul><li>Society of Hispanic Professional Engineers (SHPE) National Conference (STEM National Conference)</li><li>The annual SHPE National Convention is the largest technical and career conference for Hispanics in STEM for the country.</li><li>Attracting over 6,000 STEM students, professionals and corporate representatives. </li><li>SHPE has been changing lives by empowering the Hispanic community to realize its fullest potential and impact the world through STEM awareness, access, support and development.</li><li>I took a Rockwell facility tour and made several contacts for future full employment opportunities.</li><li>I attended career fair days and got employment opportunities from Accenture, Verizon, General Motors Company, and Qualcomm.</li></ul>",
+  41.503901, -81.694611,"C","00ff00"],
+  ["Washington, D.C. Dec 11 - Dec 14 2018",
+   "<ul><li>American Geophysical Union (AGU) Convention (Earth and Space Science Research Conference)</li><li>I attended this conference to present my research findings following my 2 week expedition to Fairbanks, Alaska as part of my CAPSTONE Research Project with NASA Undergraduate Student Instrumentation Program.</li><li>During the convention I also attended several info sessions, symposiums, workshops, tutorials, and field trips to local museums to learn about a variety of scientific subjects.</li><li>The American Geophysical Union is a 501 nonprofit organization of geophysicists, consisting of over 62,000 members from 144 countries.</li><li>The AGU's convention and activities are focused on the organization and dissemination of scientific information in the interdisciplinary and international field of geophysics.</li></ul>",
+   38.905076, -77.023004,"W","ff00ff"],
+  ["Houston, TX Nov 6 - Nov 9 2017",
+   "<ul><li>International Society of Automation Process Control & Safety Conference (Process Industry Conference)</li><li>My team and I presented our summer internship project for green transportation solution in front of 40 industry professionals that were attending the conference.</li><li>The purpose of the project was to implement a campus bicycle sharing system where I worked on Alternative Energy Source (PV Panel Based System) and Customer Discovery: Data Collection and Analysis.</li><li>ISA Process Industry Conference combined the technical expertise, knowledge, and experience of global leaders in process automation standards, training, and education across critical areas covering: process instrumentation/control, cybersecurity & safety systems, open architecture & infrastructure, and operational excellence. </li></ul>",
+   29.734403, -95.550102,"H","8888ff"],
+  ["Kansas City, MO Nov 1 - Nov 4 2017",
+   "<ul><li>Society of Hispanic Professional Engineers (SHPE) National Conference (STEM National Conference)</li><li>The annual SHPE National Convention is the largest technical and career conference for Hispanics in STEM for the country.</li><li>Attracting over 6,000 STEM students, professionals and corporate representatives.</li><li>SHPE has been changing lives by empowering the Hispanic community to realize its fullest potential and impact the world through STEM awareness, access, support and development.</li><li>I attended several workshop and info sessions, like emerging technology in IoT and Nanotechnology, and Coding Interview prep workshop from Amazon Employees.</li><li>Made several contacts for future full employment opportunities during career fair.</li></ul>",
+    39.098521, -94.587716,"K","ffff00"]
+];  
+var image_array= new Array();
+function initialize() {
+// make a table for the text below the map
+  os="<table border='0'><tr><td colspan='2'><center><b>CONFERENCES ATTENDED DURING COLLEGE CAREER AT THE UNIVERISTY OF HOUSTON</td></tr>";
+// create the map
+  var map = new google.maps.Map(document.getElementById("map_canvas"));  
+// create the bounds objects (to hold all the lat and lng values to find the extent of the map  
+  var bounds = new google.maps.LatLngBounds();
+// loop through all the locations in the b_locations array   
+  for (i=0; i  < my_locations.length; i++)                               
+       {
+        // create the lat lng object for this location
+           var thisLatLng = new google.maps.LatLng(my_locations[i][2], my_locations[i][3]); 
+        // add the lat/lng for this location to the list of bounds             
+           bounds.extend(thisLatLng);  
+        // create an image array object in the ith location of the image_array            
+           image_array [i]= new Image(); 
+        // specify the marker letter and the color of this location and store the image in an array           
+           image_array[i].src = 'http://www.googlemapsmarkers.com/v1/'+my_locations[i][4]+"/"+my_locations[i][5]+'/'; 
+        // create the marker           /
+           createMarker(i,thisLatLng,map);       
+        // add the data to the table
+        os=os+"<tr><td valign='top'><img src='"+image_array[i].src+"'></td><td><b>"+my_locations[i][0]+"</b><br>"+my_locations[i][1]+"</td></tr>"; 
+       }
+// fit the map to the bounds data
+  map.fitBounds(bounds);
+// end the table and display it in the DIV block with id="sol"
+  sol.innerHTML=os+"</table>";  
+}
+function createMarker(k,theLatLng,map) 
+{
+// this functions gets: k is the index (row) of the location, lat/lng, map object 
+//
+//  *** we use this function so that each marker has its own listener
+//  *** see this: http://stackoverflow.com/questions/15774011/googlemaps-the-addlistener-is-only-working-for-the-last-marker?rq=1
+//
+  var marker = new google.maps.Marker({
+            position: theLatLng,             // sets the lat/lng of the marker
+            map: map,                        // sets the map object
+            icon: image_array[k].src,        // sets the marker image 
+            title: my_locations[k][0]        // gets the tooltip text
+            });
+//
+// *** when the marker is clicked we zoom in and reset the center of the map to the marker co-ordinates
+//
+  google.maps.event.addListener(marker, 'click', function() {  // what to do when the used clicks the marker
+            map.setZoom(16);                                   // zoom to level 16
+            map.setCenter(theLatLng);                          // set the center of the map to the marker location 
+            });
+}
+</script>
+</head>
+<body onload="initialize()">
+
+<!--- the map is define on the page as a DIV block with id="map_canvas" and is 700 by 700 pixels with a black border -->
+<div id="map_canvas" style="border:solid black;1px;height:700px;width:700px; margin:0 auto" ></div>
+<p>
+<!--- the table is displayed below the map in a DIV block with id="sol" and is 700 pixels wide with a black border -->
+<div id="sol" style="border:solid black;1px;width:700px; margin:0 auto">
+<p>
+</body>
+</html>
